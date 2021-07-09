@@ -2,11 +2,22 @@ use anyhow::Result;
 
 mod examples;
 
+const ENDPOINT_VAR: &str = "STREAMS_ENDPOINT";
+
 #[tokio::main]
 async fn main() -> Result<()> {
-    let url = "https://chrysalis-nodes.iota.org";
+    let url = &std::env::var(ENDPOINT_VAR).unwrap_or_else(|_| {
+        let url = "https://chrysalis-nodes.iota.org".to_string();
+        println!(
+            "\n!! Environment variable '{}' not found or invalid. \
+            Using default {}",
+            ENDPOINT_VAR,
+            url
+        );
+        url
+    });
 
-    println!("Starting Examples");
+    println!("\nStarting Examples");
     println!("---------------------------------------");
     println!("Single Publisher Examples");
 
