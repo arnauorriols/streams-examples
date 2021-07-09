@@ -11,8 +11,7 @@ async fn main() -> Result<()> {
         println!(
             "\n!! Environment variable '{}' not found or invalid. \
             Using default {}",
-            ENDPOINT_VAR,
-            url
+            ENDPOINT_VAR, url
         );
         url
     });
