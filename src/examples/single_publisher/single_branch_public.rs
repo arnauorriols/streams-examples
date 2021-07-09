@@ -30,12 +30,12 @@ pub fn example(node_url: &str) -> Result<()> {
     );
 
     // Author will now send signed encrypted messages in a chain
-    let msg_inputs = vec![
+    let msg_inputs = [
         "These", "Messages", "Will", "Be", "Masked", "And", "Sent", "In", "A", "Chain",
     ];
 
     let mut prev_msg_link = announcement_link;
-    for input in &msg_inputs {
+    for input in msg_inputs {
         let (msg_link, _seq_link) = author.send_signed_packet(
             &prev_msg_link,
             &Bytes::default(),
