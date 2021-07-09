@@ -5,21 +5,17 @@ use iota_streams::{
 };
 
 use crate::examples::{verify_messages, ALPH9};
-use rand::Rng;
+use rand::seq::IteratorRandom;
 
 pub fn example(node_url: &str) -> Result<()> {
-    // Generate a unique seed for the author
-    let seed: &str = &(0..81)
-        .map(|_| {
-            ALPH9
-                .chars()
-                .nth(rand::thread_rng().gen_range(0, 27))
-                .unwrap()
-        })
-        .collect::<String>();
-
     // Create the Transport Client
     let client = Client::new_from_url(node_url);
+
+    // Generate a unique seed for the author
+    let seed: &str =
+        &std::iter::repeat_with(|| ALPH9.chars().choose(&mut rand::thread_rng()).unwrap())
+            .take(80)
+            .collect::<String>();
 
     // Generate an Author
     let mut author = Author::new(seed, ChannelType::SingleBranch, client.clone());
