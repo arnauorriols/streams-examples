@@ -13,21 +13,10 @@ pub const ALPH9: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ9";
 
 // Iterate through the retrieved messages to ensure they match those that were sent
 pub fn verify_messages(sent_msgs: &[&str], retrieved_msgs: Vec<UnwrappedMessage>) -> Result<()> {
-    let processed_msgs = retrieved_msgs
+    let processed_msgs: Vec<&str> = retrieved_msgs
         .iter()
-        .map(|msg| {
-            let content = &msg.body;
-            match content {
-                MessageContent::SignedPacket {
-                    pk: _,
-                    public_payload: _,
-                    masked_payload,
-                } => String::from_utf8(masked_payload.0.to_vec()).unwrap(),
-                _ => String::default(),
-            }
-        })
-        .filter(|s| s != &String::default())
-        .collect::<Vec<String>>();
+        .filter_map(extract_message_masked_payload)
+        .collect();
 
     if processed_msgs.is_empty() && sent_msgs.is_empty() {
         return Ok(());
@@ -41,4 +30,15 @@ pub fn verify_messages(sent_msgs: &[&str], retrieved_msgs: Vec<UnwrappedMessage>
     println!();
 
     Ok(())
+}
+
+fn extract_message_masked_payload(msg: &UnwrappedMessage) -> Option<&str> {
+    match &msg.body {
+        MessageContent::SignedPacket {
+            pk: _,
+            public_payload: _,
+            masked_payload,
+        } => Some(std::str::from_utf8(&masked_payload.0).ok()?),
+        _ => None,
+    }
 }
