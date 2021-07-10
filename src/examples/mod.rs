@@ -12,14 +12,14 @@ use rand::seq::IteratorRandom;
 
 const ALPH9: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ9";
 
-pub fn generate_seed() -> String {
+fn generate_seed() -> String {
     std::iter::repeat_with(|| ALPH9.chars().choose(&mut rand::thread_rng()).unwrap())
         .take(80)
         .collect::<String>()
 }
 
 // Iterate through the retrieved messages to ensure they match those that were sent
-pub fn verify_messages(sent_msgs: &[&str], retrieved_msgs: Vec<UnwrappedMessage>) -> Result<()> {
+fn verify_messages(sent_msgs: &[&str], retrieved_msgs: Vec<UnwrappedMessage>) -> Result<()> {
     let processed_msgs: Vec<&str> = retrieved_msgs
         .iter()
         .filter_map(extract_message_masked_payload)
