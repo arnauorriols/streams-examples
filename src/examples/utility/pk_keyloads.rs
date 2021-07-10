@@ -4,20 +4,12 @@ use iota_streams::{
     core::{println, Result},
 };
 
-use crate::examples::ALPH9;
+use crate::examples::generate_seed;
 use iota_streams::app_channels::api::tangle::PublicKey;
-use rand::Rng;
 
 pub fn example(node_url: &str) -> Result<()> {
     // Generate a unique seed for the author
-    let seed: &str = &(0..81)
-        .map(|_| {
-            ALPH9
-                .chars()
-                .nth(rand::thread_rng().gen_range(0, 27))
-                .unwrap()
-        })
-        .collect::<String>();
+    let seed = &generate_seed();
 
     // Create the Transport Client
     let client = Client::new_from_url(node_url);

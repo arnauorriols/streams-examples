@@ -8,8 +8,15 @@ pub use utility::*;
 
 use anyhow::Result;
 use iota_streams::app_channels::api::tangle::{MessageContent, UnwrappedMessage};
+use rand::seq::IteratorRandom;
 
-pub const ALPH9: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ9";
+const ALPH9: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ9";
+
+pub fn generate_seed() -> String {
+    std::iter::repeat_with(|| ALPH9.chars().choose(&mut rand::thread_rng()).unwrap())
+        .take(80)
+        .collect::<String>()
+}
 
 // Iterate through the retrieved messages to ensure they match those that were sent
 pub fn verify_messages(sent_msgs: &[&str], retrieved_msgs: Vec<UnwrappedMessage>) -> Result<()> {
