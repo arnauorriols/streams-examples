@@ -89,24 +89,24 @@ pub fn example(node_url: &str) -> Result<()> {
     // link itself, the second is an optional sequencing message.
     // ** In multi branch implementations, sequencing messages are sent to act as indexing references
     // for data location within the channel tree
-    let (_keyload_a_link, seq_a_link) = author.send_keyload(
+    let (keyload_a_link, seq_a_link) = author.send_keyload(
         &announcement_link,
         &[],
         &vec![PublicKey::from_bytes(sub_a_pk)?],
     )?;
     println!(
         "\nSent Keyload for Sub A: {}, seq: {}",
-        _keyload_a_link,
+        keyload_a_link,
         seq_a_link.as_ref().unwrap()
     );
 
     // Author will send the second Keyload with the PSK shared with Subscriber B (also linked to the
     // announcement message) to generate another new branch
-    let (_keyload_b_link, seq_b_link) =
+    let (keyload_b_link, seq_b_link) =
         author.send_keyload(&announcement_link, &[pskid], &vec![])?;
     println!(
         "\nSent Keyload for Sub B: {}, seq: {}",
-        _keyload_b_link,
+        keyload_b_link,
         seq_b_link.as_ref().unwrap()
     );
 
@@ -125,7 +125,7 @@ pub fn example(node_url: &str) -> Result<()> {
         "A",
     ];
 
-    let mut prev_msg_link = _keyload_a_link;
+    let mut prev_msg_link = keyload_a_link;
     for input in &msg_inputs_a {
         let (msg_link, seq_link) = author.send_signed_packet(
             &prev_msg_link,
@@ -152,7 +152,7 @@ pub fn example(node_url: &str) -> Result<()> {
         "B",
     ];
 
-    let mut prev_msg_link = _keyload_b_link;
+    let mut prev_msg_link = keyload_b_link;
     for input in &msg_inputs_b {
         let (msg_link, seq_link) = author.send_signed_packet(
             &prev_msg_link,
