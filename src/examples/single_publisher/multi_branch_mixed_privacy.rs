@@ -111,7 +111,7 @@ pub fn example(node_url: &str) -> Result<()> {
     );
 
     // Author will now send signed encrypted messages to Sub A in a chain attached to Keyload A
-    let msg_inputs_a = vec![
+    let msg_inputs_a = [
         "These",
         "Messages",
         "Will",
@@ -126,7 +126,7 @@ pub fn example(node_url: &str) -> Result<()> {
     ];
 
     let mut prev_msg_link = keyload_a_link;
-    for input in &msg_inputs_a {
+    for input in msg_inputs_a {
         let (msg_link, seq_link) = author.send_signed_packet(
             &prev_msg_link,
             &Bytes::default(),
@@ -138,7 +138,7 @@ pub fn example(node_url: &str) -> Result<()> {
     }
 
     // Author will now send signed encrypted messages to Sub B in a chain attached to Keyload B
-    let msg_inputs_b = vec![
+    let msg_inputs_b = [
         "These",
         "Messages",
         "Will",
@@ -153,7 +153,7 @@ pub fn example(node_url: &str) -> Result<()> {
     ];
 
     let mut prev_msg_link = keyload_b_link;
-    for input in &msg_inputs_b {
+    for input in msg_inputs_b {
         let (msg_link, seq_link) = author.send_signed_packet(
             &prev_msg_link,
             &Bytes::default(),
@@ -165,12 +165,12 @@ pub fn example(node_url: &str) -> Result<()> {
     }
 
     // Lastly the Author will now send signed encrypted messages in a public chain readable by anyone (Subscriber C)
-    let msg_inputs_all = vec![
+    let msg_inputs_all = [
         "These", "Messages", "Will", "Be", "Masked", "And", "Readable", "By", "Anyone",
     ];
 
     let mut prev_msg_link = announcement_link;
-    for input in &msg_inputs_all {
+    for input in msg_inputs_all {
         let (msg_link, seq_link) = author.send_signed_packet(
             &prev_msg_link,
             &Bytes::default(),
