@@ -47,10 +47,6 @@ async fn main() -> Result<()> {
     println!("Utility Examples");
 
     println!("\n---------------------------------------");
-    println!("\nPrevious Message Retrieval\n");
-    examples::fetch_prev::example(url)?;
-
-    println!("\n---------------------------------------");
     println!("\nGranting and Revoking Access\n");
     examples::grant_and_revoke_access::example(url)?;
 
